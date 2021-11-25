@@ -5,12 +5,6 @@ config();
 
 app.listen(process.env.PORT);
 
-// app.use(express.static("public"));
-
-// app.get("/", function(request, response) {
-//   response.sendFile(__dirname + "/views/index.html");
-// });
-
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
@@ -51,11 +45,14 @@ client.on("message", async (receivedMessage) => {
     '"Masturbarse es positivo, si fuera negativo sería menosturbarse" - Rafael Alberti',
   ];
 
-  let random = Math.floor(Math.random() * tongoReply.length);
+  // Random Text from Array
+  const randomText = (array) => {
+    return array[Math.floor(Math.random() * array.length)];
+  };
 
   if (receivedMessage.content.startsWith(`${prefix}tongo`)) {
-    receivedMessage.channel.send(tongoReply[random]);
-  }
+    receivedMessage.channel.send(randomText(tongoReply));
+  } 
 });
 
 client.login(DISCORD_TOKEN);
