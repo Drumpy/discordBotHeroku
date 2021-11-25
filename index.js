@@ -22,12 +22,12 @@ client.on("ready", () => {
   // Current Activity
   client.user.setActivity("Corriendo en Heroku", { type: "WATCHING" });
 
-  client.guilds.cache.forEach((guild) => {
-    console.log(guild.name);
-    guild.channels.cache.forEach((channel) => {
-      console.log(` - ${channel.name} ${channel.type} ${channel.id} `);
-    });
-  });
+  // client.guilds.cache.forEach((guild) => {
+  //   console.log(guild.name);
+  //   guild.channels.cache.forEach((channel) => {
+  //     console.log(` - ${channel.name} ${channel.type} ${channel.id} `);
+  //   });
+  // });
 });
 
 client.on("message", async (receivedMessage) => {
