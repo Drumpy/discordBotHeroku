@@ -1,5 +1,4 @@
-const express = require("express");
-// const fetch = require("node-fetch");
+import express from "express";
 import fetch from "node-fetch";
 const app = express();
 const { config } = require("dotenv");
@@ -7,7 +6,7 @@ config();
 
 app.listen(process.env.PORT);
 
-const Discord = require("discord.js");
+import Discord from "discord.js";
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
