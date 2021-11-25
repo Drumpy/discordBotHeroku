@@ -10,10 +10,11 @@ import Discord from "discord.js";
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
-const response = fetch(
-  "https://v2.jokeapi.dev/joke/Programming?type=single"
-).then((res) => res.json());
-console.log(response);
+const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+  });
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
