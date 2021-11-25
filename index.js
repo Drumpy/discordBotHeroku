@@ -31,7 +31,7 @@ client.on("message", async (receivedMessage) => {
   const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
     .then((res) => res.json())
     .then((data) => {
-      console.log(data.joke);
+      return data.joke;
     });
 
   // Commands
@@ -64,7 +64,9 @@ client.on("message", async (receivedMessage) => {
 
   // Command: !joke
   if (receivedMessage.content.startsWith(`${prefix}joke`)) {
-    receivedMessage.channel.send(joke);
+    joke.then((data) => {
+      receivedMessage.channel.send(data);
+    });
   }
 });
 
