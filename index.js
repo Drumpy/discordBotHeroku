@@ -10,11 +10,13 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
-const response = await fetch(
-  "https://v2.jokeapi.dev/joke/Programming?type=single"
-);
-const body = await response.json();
-console.log(body);
+(async () => {
+  const response = await fetch(
+    "https://v2.jokeapi.dev/joke/Programming?type=single"
+  );
+  const body = await response.json();
+  console.log(body);
+})();
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
