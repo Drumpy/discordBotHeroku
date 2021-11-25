@@ -1,6 +1,5 @@
 const express = require("express");
-// const fetch = require("node-fetch");
-import fetch from "node-fetch";
+const fetch = require("node-fetch");
 const app = express();
 const { config } = require("dotenv");
 config();
@@ -11,13 +10,10 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
-(async () => {
-  const response = await fetch(
-    "https://v2.jokeapi.dev/joke/Programming?type=single"
-  );
-  const body = await response.json();
-  console.log(body);
-})();
+const response = fetch(
+  "https://v2.jokeapi.dev/joke/Programming?type=single"
+).then((res) => res.json());
+console.log(response);
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
