@@ -14,7 +14,7 @@ client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
 
   // Current Activity
-  client.user.setActivity("Corriendo en Heroku", { type: "WATCHING" });
+  client.user.setActivity("Black Mirror", { type: "WATCHING" });
 
   // client.guilds.cache.forEach((guild) => {
   //   console.log(guild.name);
