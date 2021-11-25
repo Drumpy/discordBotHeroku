@@ -64,9 +64,7 @@ client.on("message", async (receivedMessage) => {
 
   // Command: !joke
   if (receivedMessage.content.startsWith(`${prefix}joke`)) {
-    joke.then((data) => {
-      receivedMessage.channel.send(data);
-    });
+    receivedMessage.channel.send(joke);
   }
 });
 
