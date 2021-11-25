@@ -10,29 +10,29 @@ import Discord from "discord.js";
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
-const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
-  .then((res) => res.json())
-  .then((data) => {
-    console.log(data.joke);
-  });
-
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
 
   // Current Activity
   client.user.setActivity("Corriendo en Heroku", { type: "WATCHING" });
 
-  client.guilds.cache.forEach((guild) => {
-    console.log(guild.name);
-    guild.channels.cache.forEach((channel) => {
-      console.log(` - ${channel.name} ${channel.type} ${channel.id} `);
-    });
-  });
+  // client.guilds.cache.forEach((guild) => {
+  //   console.log(guild.name);
+  //   guild.channels.cache.forEach((channel) => {
+  //     console.log(` - ${channel.name} ${channel.type} ${channel.id} `);
+  //   });
+  // });
 });
 
 client.on("message", async (receivedMessage) => {
   // Prevent bot from responding to its own messages
   if (receivedMessage.author == client.user) return;
+
+  const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data.joke);
+    });
 
   // Commands
   const prefix = "!";
@@ -65,7 +65,7 @@ client.on("message", async (receivedMessage) => {
   // Command: !joke
   if (receivedMessage.content.startsWith(`${prefix}joke`)) {
     joke.then((data) => {
-      receivedMessage.channel.send(data.joke);
+      receivedMessage.channel.send(data);
     });
   }
 });
