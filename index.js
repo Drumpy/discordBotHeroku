@@ -1,4 +1,5 @@
 const express = require("express");
+const fetch = require("node-fetch");
 const app = express();
 const { config } = require("dotenv");
 config();
@@ -8,6 +9,12 @@ app.listen(process.env.PORT);
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+
+const response = await fetch(
+  "https://v2.jokeapi.dev/joke/Programming?type=single"
+);
+const body = await response.json();
+console.log(body);
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
@@ -52,7 +59,7 @@ client.on("message", async (receivedMessage) => {
 
   if (receivedMessage.content.startsWith(`${prefix}tongo`)) {
     receivedMessage.channel.send(randomText(tongoReply));
-  } 
+  }
 });
 
 client.login(DISCORD_TOKEN);
