@@ -13,7 +13,7 @@ const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
   .then((res) => res.json())
   .then((data) => {
-    console.log(data);
+    console.log(data.joke);
   });
 
 client.on("ready", () => {
@@ -57,8 +57,16 @@ client.on("message", async (receivedMessage) => {
     return array[Math.floor(Math.random() * array.length)];
   };
 
+  // PASAR ESTO A UNA FUNCION
   if (receivedMessage.content.startsWith(`${prefix}tongo`)) {
     receivedMessage.channel.send(randomText(tongoReply));
+  }
+
+  // Command: !joke
+  if (receivedMessage.content.startsWith(`${prefix}joke`)) {
+    joke.then((data) => {
+      receivedMessage.channel.send(data.joke);
+    });
   }
 });
 
