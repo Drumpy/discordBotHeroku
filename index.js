@@ -5,7 +5,7 @@ config();
 
 app.listen(process.env.PORT);
 
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
 // app.get("/", function(request, response) {
 //   response.sendFile(__dirname + "/views/index.html");
