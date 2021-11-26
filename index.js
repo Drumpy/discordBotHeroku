@@ -31,7 +31,7 @@ client.on("ready", () => {
   });
 
   commands?.create({
-    name: "bromaa",
+    name: "broma",
     description: "Responde con un chiste traducido",
   });
 });
