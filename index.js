@@ -34,6 +34,10 @@ client.on("ready", () => {
     name: "broma",
     description: "Responde con un chiste traducido",
   });
+
+  commands?.delete({
+    name: "bromaa",
+  });
 });
 
 client.on("interactionCreate", async (interaction) => {
