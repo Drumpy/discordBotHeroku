@@ -35,9 +35,11 @@ client.on("ready", () => {
     description: "Responde con un chiste traducido",
   });
 
-  commands?.delete({
-    name: "bromaa",
-  });
+  // commands?.delete({
+  //   name: "bromaa",
+  // });
+
+  console.log(commands);
 });
 
 client.on("interactionCreate", async (interaction) => {
