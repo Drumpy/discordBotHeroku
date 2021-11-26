@@ -21,8 +21,8 @@ client.on("ready", () => {
 
   let commands = client.application?.commands;
   commands?.create({
-    name: "ping",
-    description: "Replies with pong",
+    name: "joke",
+    description: "Jokes about programming.",
   });
 });
 
@@ -31,9 +31,15 @@ client.on("interactionCreate", async (interaction) => {
 
   const { commandName, options } = interaction;
 
-  if (commandName === "ping") {
+  if (commandName === "joke") {
+    const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
+      .then((res) => res.json())
+      .then((data) => {
+        return data.joke;
+      });
+
     interaction.reply({
-      content: "pong",
+      content: joke,
     });
   }
 });
@@ -41,12 +47,6 @@ client.on("interactionCreate", async (interaction) => {
 client.on("messageCreate", async (receivedMessage) => {
   // Prevent bot from responding to its own messages
   if (receivedMessage.author == client.user) return;
-
-  const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
-    .then((res) => res.json())
-    .then((data) => {
-      return data.joke;
-    });
 
   // Commands
   const prefix = "!";
@@ -77,11 +77,11 @@ client.on("messageCreate", async (receivedMessage) => {
   }
 
   // Command: !joke
-  if (receivedMessage.content.startsWith(`${prefix}joke`)) {
-    joke.then((data) => {
-      receivedMessage.channel.send(data);
-    });
-  }
+  // if (receivedMessage.content.startsWith(`${prefix}joke`)) {
+  //   joke.then((data) => {
+  //     receivedMessage.channel.send(data);
+  //   });
+  // }
 });
 
 client.login(DISCORD_TOKEN);
