@@ -43,14 +43,14 @@ client.on("interactionCreate", async (interaction) => {
   }
 
   if (commandName === "joke") {
-    // const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     return data.joke;
-    //   });
+    const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
+      .then((res) => res.json())
+      .then((data) => {
+        return data.joke;
+      });
 
     interaction.reply({
-      content: "Joke",
+      content: joke.then((joke) => joke),
     });
   }
 });
