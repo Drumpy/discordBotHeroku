@@ -39,7 +39,7 @@ client.on("interactionCreate", async (interaction) => {
       });
 
     interaction.reply({
-      content: joke,
+      content: 'Joke',
     });
   }
 });
