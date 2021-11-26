@@ -120,13 +120,6 @@ client.on("messageCreate", async (receivedMessage) => {
   if (receivedMessage.content.startsWith(`${prefix}tongo`)) {
     receivedMessage.channel.send(randomText(tongoReply));
   }
-
-  // Command: !joke
-  if (receivedMessage.content.startsWith(`${prefix}joke`)) {
-    joke.then((data) => {
-      receivedMessage.channel.send(data);
-    });
-  }
 });
 
 client.login(DISCORD_TOKEN);
