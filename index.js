@@ -49,8 +49,10 @@ client.on("interactionCreate", async (interaction) => {
         return data.joke;
       });
 
+    const jokeResponse = await joke;
+
     interaction.reply({
-      content: joke.then((joke) => joke),
+      content: jokeResponse,
     });
   }
 });
