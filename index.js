@@ -35,9 +35,9 @@ client.on("ready", () => {
     description: "Responde con un chiste traducido",
   });
 
-  // commands?.delete({
-  //   name: "bromaa",
-  // });
+  commands.cache.forEach((value, key) => {
+    console.log(`${key}: ${value.name}`);
+  })
 
   console.log(commands);
 });
