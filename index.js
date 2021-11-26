@@ -20,16 +20,17 @@ client.on("ready", async () => {
   client.user.setActivity("Black Mirror", { type: "WATCHING" });
 
   let commands = client.application?.commands;
+  // Command 'Ping'
   commands?.create({
     name: "ping",
     description: "Replies with pong",
   });
-
+  // Command 'Joke'
   commands?.create({
     name: "joke",
     description: "Replies with a random joke",
   });
-
+  // Command 'Broma'
   commands?.create({
     name: "broma",
     description: "Responde con un chiste traducido",
@@ -44,6 +45,7 @@ client.on("interactionCreate", async (interaction) => {
   if (commandName === "ping") {
     interaction.reply({
       content: "pong",
+      ephemeral: true,
     });
   }
 
@@ -62,13 +64,9 @@ client.on("interactionCreate", async (interaction) => {
   }
 
   if (commandName === "broma") {
-    const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
-      .then((res) => res.json())
-      .then((data) => {
-        return data.joke;
-      });
-
-    const jokeResponse = await joke;
+    const joke = await fetch("https://v2.jokeapi.dev/joke/Programming?type=single");
+    const resJson = await joke.json();
+    const jokeResponse = resJson.joke;
 
     const res = await fetch("https://libretranslate.de/translate", {
       method: "POST",
