@@ -35,11 +35,9 @@ client.on("ready", () => {
     description: "Responde con un chiste traducido",
   });
 
-  commands.cache.forEach((value, key) => {
-    console.log(`${key}: ${value.name}`);
-  })
-
-  console.log(commands);
+  const app = client.api.application(client.user.id);
+  const comandos = app.commands.get();
+  console.log(comandos);
 });
 
 client.on("interactionCreate", async (interaction) => {
