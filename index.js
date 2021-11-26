@@ -29,11 +29,6 @@ client.on("ready", () => {
     name: "joke",
     description: "Replies with a random joke",
   });
-
-  commands?.create({
-    name: "broma",
-    description: "Responde con un chiste traducido",
-  });
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -58,33 +53,6 @@ client.on("interactionCreate", async (interaction) => {
 
     interaction.reply({
       content: jokeResponse,
-    });
-  }
-
-  if (commandName === "broma") {
-    const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
-      .then((res) => res.json())
-      .then((data) => {
-        return data.joke;
-      });
-
-    const jokeResponse = await joke;
-
-    const res = await fetch("https://libretranslate.com/translate", {
-      method: "POST",
-      body: JSON.stringify({
-        q: jokeResponse,
-        source: "en",
-        target: "es",
-        format: "text",
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    const broma = await res.json();
-
-    interaction.reply({
-      content: broma.translatedText,
     });
   }
 });
