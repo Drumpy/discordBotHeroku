@@ -13,7 +13,7 @@ const client = new Discord.Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
 
-client.on("ready", () => {
+client.on("ready", async () => {
   console.log("Connected as " + client.user.tag);
 
   // Current Activity
@@ -34,10 +34,6 @@ client.on("ready", () => {
     name: "broma",
     description: "Responde con un chiste traducido",
   });
-
-  const app = client.api.application(client.user.id);
-  const comandos = app.commands.get();
-  console.log(comandos);
 });
 
 client.on("interactionCreate", async (interaction) => {
