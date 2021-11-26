@@ -6,9 +6,12 @@ config();
 
 app.listen(process.env.PORT);
 
-import Discord from "discord.js";
-const client = new Discord.Client();
+import Discord, { Intents } from "discord.js";
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+
+const client = new Discord.Client({
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+});
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
@@ -16,15 +19,26 @@ client.on("ready", () => {
   // Current Activity
   client.user.setActivity("Black Mirror", { type: "WATCHING" });
 
-  // client.guilds.cache.forEach((guild) => {
-  //   console.log(guild.name);
-  //   guild.channels.cache.forEach((channel) => {
-  //     console.log(` - ${channel.name} ${channel.type} ${channel.id} `);
-  //   });
-  // });
+  let commands = client.application?.commands;
+  commands?.create({
+    name: "ping",
+    description: "Replies with pong",
+  });
 });
 
-client.on("message", async (receivedMessage) => {
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isCommand()) return;
+
+  const { commandName, options } = interaction;
+
+  if (commandName === "ping") {
+    interaction.reply({
+      content: "pong",
+    });
+  }
+});
+
+client.on("messageCreate", async (receivedMessage) => {
   // Prevent bot from responding to its own messages
   if (receivedMessage.author == client.user) return;
 
@@ -57,7 +71,7 @@ client.on("message", async (receivedMessage) => {
     return array[Math.floor(Math.random() * array.length)];
   };
 
-  // PASAR ESTO A UNA FUNCION
+  // TODO: PASAR ESTO A UNA FUNCION
   if (receivedMessage.content.startsWith(`${prefix}tongo`)) {
     receivedMessage.channel.send(randomText(tongoReply));
   }
