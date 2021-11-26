@@ -20,16 +20,15 @@ client.on("ready", () => {
   client.user.setActivity("Black Mirror", { type: "WATCHING" });
 
   let commands = client.application?.commands;
-  commands?.create(
-    {
-      name: "ping",
-      description: "Replies with pong",
-    },
-    {
-      name: "joke",
-      description: "Replies with a random joke",
-    }
-  );
+  commands?.create({
+    name: "ping",
+    description: "Replies with pong",
+  });
+
+  commands?.create({
+    name: "joke",
+    description: "Replies with a random joke",
+  });
 });
 
 client.on("interactionCreate", async (interaction) => {
