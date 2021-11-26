@@ -20,10 +20,16 @@ client.on("ready", () => {
   client.user.setActivity("Black Mirror", { type: "WATCHING" });
 
   let commands = client.application?.commands;
-  commands?.create({
-    name: "ping",
-    description: "Replies with pong",
-  });
+  commands?.create(
+    {
+      name: "ping",
+      description: "Replies with pong",
+    },
+    {
+      name: "joke",
+      description: "Replies with a random joke",
+    }
+  );
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -36,17 +42,23 @@ client.on("interactionCreate", async (interaction) => {
       content: "pong",
     });
   }
+
+  if (commandName === "joke") {
+    const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
+      .then((res) => res.json())
+      .then((data) => {
+        return data.joke;
+      });
+
+    interaction.reply({
+      content: joke,
+    });
+  }
 });
 
 client.on("messageCreate", async (receivedMessage) => {
   // Prevent bot from responding to its own messages
   if (receivedMessage.author == client.user) return;
-
-  const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
-    .then((res) => res.json())
-    .then((data) => {
-      return data.joke;
-    });
 
   // Commands
   const prefix = "!";
