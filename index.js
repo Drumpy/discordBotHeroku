@@ -1,13 +1,18 @@
 import express from "express";
-import fetch from "node-fetch";
 const app = express();
+import Discord, { Intents } from "discord.js";
+import fetch from "node-fetch";
 import { config } from "dotenv";
 config();
 
 app.listen(process.env.PORT);
 
-import Discord, { Intents } from "discord.js";
+import getJoke from "./getJoke.js";
+import getTranslation from "./getTranslation.js";
+
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+const JOKE_URL = "https://v2.jokeapi.dev/joke/Programming?type=single";
+const TRANSLATION_URL = "https://libretranslate.de/translate";
 
 const client = new Discord.Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
@@ -31,10 +36,10 @@ client.on("ready", async () => {
     description: "Replies with a random joke",
   });
   // Command 'Broma'
-  // commands?.create({
-  //   name: "broma",
-  //   description: "Responde con un chiste traducido",
-  // });
+  commands?.create({
+    name: "broma",
+    description: "Responde con un chiste traducido",
+  });
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -49,49 +54,26 @@ client.on("interactionCreate", async (interaction) => {
     });
   }
 
+  // Command 'Joke'
   if (commandName === "joke") {
-    const joke = await fetch("https://v2.jokeapi.dev/joke/Programming?type=single");
-    const jokeJson = await joke.json();
-    const jokeResponse = jokeJson.joke;
-
-    // const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     return data.joke;
-    //   });
+    const jokeMessage = await getJoke(JOKE_URL);
 
     interaction.reply({
-      content: jokeResponse,
+      content: jokeMessage,
     });
   }
 
-  // if (commandName === "broma") {
-  //   await interaction.deferReply({ ephemeral: true });
-    
-  //   const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single");
-  //   const jokeResponse = await joke;
-  //   console.log(jokeResponse);
+  // Command 'Broma'
+  if (commandName === "broma") {
+    await interaction.deferReply();
 
-  //   const resJson = await joke.json();
-  //   const jokeResponse = resJson.joke;
+    const jokeMessage = await getJoke(JOKE_URL);
+    const translatedJoke = await getTranslation(TRANSLATION_URL, jokeMessage);
 
-  //   const res = await fetch("https://libretranslate.de/translate", {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       q: jokeResponse,
-  //       source: "en",
-  //       target: "es",
-  //       format: "text",
-  //     }),
-  //     headers: { "Content-Type": "application/json" },
-  //   });
-
-  //   const broma = await res.json();
-
-  //   interaction.reply({
-  //     content: broma.translatedText,
-  //   });
-  // }
+    interaction.editReply({
+      content: translatedJoke,
+    });
+  }
 });
 
 client.on("messageCreate", async (receivedMessage) => {
