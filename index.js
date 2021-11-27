@@ -31,10 +31,10 @@ client.on("ready", async () => {
     description: "Replies with a random joke",
   });
   // Command 'Broma'
-  commands?.create({
-    name: "broma",
-    description: "Responde con un chiste traducido",
-  });
+  // commands?.create({
+  //   name: "broma",
+  //   description: "Responde con un chiste traducido",
+  // });
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -50,41 +50,48 @@ client.on("interactionCreate", async (interaction) => {
   }
 
   if (commandName === "joke") {
-    const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
-      .then((res) => res.json())
-      .then((data) => {
-        return data.joke;
-      });
+    const joke = await fetch("https://v2.jokeapi.dev/joke/Programming?type=single");
+    const jokeJson = await joke.json();
+    const jokeResponse = jokeJson.joke;
 
-    const jokeResponse = await joke;
+    // const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single")
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     return data.joke;
+    //   });
 
     interaction.reply({
       content: jokeResponse,
     });
   }
 
-  if (commandName === "broma") {
-    const joke = await fetch("https://v2.jokeapi.dev/joke/Programming?type=single");
-    const resJson = await joke.json();
-    const jokeResponse = resJson.joke;
+  // if (commandName === "broma") {
+  //   await interaction.deferReply({ ephemeral: true });
+    
+  //   const joke = fetch("https://v2.jokeapi.dev/joke/Programming?type=single");
+  //   const jokeResponse = await joke;
+  //   console.log(jokeResponse);
 
-    const res = await fetch("https://libretranslate.de/translate", {
-      method: "POST",
-      body: JSON.stringify({
-        q: jokeResponse,
-        source: "en",
-        target: "es",
-        format: "text",
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
+  //   const resJson = await joke.json();
+  //   const jokeResponse = resJson.joke;
 
-    const broma = await res.json();
+  //   const res = await fetch("https://libretranslate.de/translate", {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       q: jokeResponse,
+  //       source: "en",
+  //       target: "es",
+  //       format: "text",
+  //     }),
+  //     headers: { "Content-Type": "application/json" },
+  //   });
 
-    interaction.reply({
-      content: broma.translatedText,
-    });
-  }
+  //   const broma = await res.json();
+
+  //   interaction.reply({
+  //     content: broma.translatedText,
+  //   });
+  // }
 });
 
 client.on("messageCreate", async (receivedMessage) => {
