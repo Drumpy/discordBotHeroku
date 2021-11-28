@@ -1,3 +1,5 @@
+import DiscordJS from "discord.js";
+
 export const commandsList = [
   {
     name: "ping",
@@ -18,5 +20,13 @@ export const commandsList = [
   {
     name: "enviar",
     description: "Contribuye con tu propio Tip de Desarrollo para la Comunidad",
+    options: [
+      {
+        name: "texto",
+        description: "Ingresa el texto con el Tip a contribuir",
+        required: true,
+        type: DiscordJS.Constants.ApplicationCommandOptionTypes.STRING,
+      },
+    ],
   },
 ];

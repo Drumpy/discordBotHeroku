@@ -1,7 +1,7 @@
 import {} from "dotenv/config";
 import express from "express";
 const app = express();
-import Discord, { Intents } from "discord.js";
+import DiscordJS, { Intents } from "discord.js";
 
 app.listen(process.env.PORT);
 
@@ -15,7 +15,7 @@ const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 const JOKE_URL = "https://v2.jokeapi.dev/joke/Programming?type=single";
 const TRANSLATION_URL = "https://libretranslate.de/translate";
 
-const client = new Discord.Client({
+const client = new DiscordJS.Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
 
@@ -23,15 +23,31 @@ client.on("ready", async () => {
   console.log("Connected as " + client.user.tag);
 
   // Current Activity
-  client.user.setActivity("Black Mirror", { type: "WATCHING" });
+  client.user.setActivity("Policias en Acción", { type: "WATCHING" });
 
   let commands = client.application?.commands;
 
+  // Create new commands
   commandsList.forEach((command) => {
-    commands?.create({
-      name: command.name,
-      description: command.description,
-    });
+    if (command.options === undefined) {
+      commands?.create({
+        name: command.name,
+        description: command.description,
+      });
+    } else {
+      commands?.create({
+        name: command.name,
+        description: command.description,
+        options: [
+          {
+            name: command.options[0].name,
+            description: command.options[0].description,
+            required: command.options[0].required,
+            type: command.options[0].type,
+          },
+        ],
+      });
+    }
   });
 });
 
@@ -71,11 +87,22 @@ client.on("interactionCreate", async (interaction) => {
 
   // Command 'Tip'
   if (commandName === "tip") {
-    const tipFromDataBase = await getDatabase();
-    const randomTip = randomText(tipFromDataBase);
+    const tipsFromDataBase = await getDatabase();
+    const randomTip = randomText(tipsFromDataBase);
 
     interaction.reply({
       content: randomTip,
+    });
+  }
+
+  // Command 'Enviar'
+  if (commandName === "enviar") {
+    await interaction.deferReply();
+    const tipFromUser = await options.getString("texto");
+    await addItem(tipFromUser);
+
+    interaction.editReply({
+      content: "**¡Tip recibido!** 😃 \n¡Gracias por tu aporte para la Comunidad!",
     });
   }
 });
