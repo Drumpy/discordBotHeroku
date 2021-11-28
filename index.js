@@ -1,14 +1,15 @@
+import {} from "dotenv/config";
 import express from "express";
 const app = express();
 import Discord, { Intents } from "discord.js";
-import fetch from "node-fetch";
-import { config } from "dotenv";
-config();
 
 app.listen(process.env.PORT);
 
-import getJoke from "./getJoke.js";
-import getTranslation from "./getTranslation.js";
+import getJoke from "./utils/getJoke.js";
+import getTranslation from "./utils/getTranslation.js";
+import { addItem, getDatabase } from "./utils/notion.js";
+import randomText from "./utils/randomText.js";
+import { commandsList } from "./commands/config.js";
 
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 const JOKE_URL = "https://v2.jokeapi.dev/joke/Programming?type=single";
@@ -25,20 +26,12 @@ client.on("ready", async () => {
   client.user.setActivity("Black Mirror", { type: "WATCHING" });
 
   let commands = client.application?.commands;
-  // Command 'Ping'
-  commands?.create({
-    name: "ping",
-    description: "Replies with pong",
-  });
-  // Command 'Joke'
-  commands?.create({
-    name: "joke",
-    description: "Replies with a random joke",
-  });
-  // Command 'Broma'
-  commands?.create({
-    name: "broma",
-    description: "Responde con un chiste traducido",
+
+  commandsList.forEach((command) => {
+    commands?.create({
+      name: command.name,
+      description: command.description,
+    });
   });
 });
 
@@ -47,6 +40,7 @@ client.on("interactionCreate", async (interaction) => {
 
   const { commandName, options } = interaction;
 
+  // Command 'Ping'
   if (commandName === "ping") {
     interaction.reply({
       content: "pong",
@@ -74,6 +68,16 @@ client.on("interactionCreate", async (interaction) => {
       content: translatedJoke,
     });
   }
+
+  // Command 'Tip'
+  if (commandName === "tip") {
+    const tipFromDataBase = await getDatabase();
+    const randomTip = randomText(tipFromDataBase);
+
+    interaction.reply({
+      content: randomTip,
+    });
+  }
 });
 
 client.on("messageCreate", async (receivedMessage) => {
@@ -97,11 +101,6 @@ client.on("messageCreate", async (receivedMessage) => {
     "Me siento más turbado que nunca 👀",
     '"Masturbarse es positivo, si fuera negativo sería menosturbarse" - Rafael Alberti',
   ];
-
-  // Random Text from Array
-  const randomText = (array) => {
-    return array[Math.floor(Math.random() * array.length)];
-  };
 
   // TODO: PASAR ESTO A UNA FUNCION
   if (receivedMessage.content.startsWith(`${prefix}tongo`)) {
