@@ -23,7 +23,7 @@ client.on("ready", async () => {
   console.log("Connected as " + client.user.tag);
 
   // Current Activity
-  client.user.setActivity("Policias en Acción", { type: "WATCHING" });
+  client.user.setActivity("Christian de Lugano", { type: "WATCHING" });
 
   let commands = client.application?.commands;
 
