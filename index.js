@@ -59,7 +59,7 @@ client.on("interactionCreate", async (interaction) => {
   // Command 'Ping'
   if (commandName === "ping") {
     interaction.reply({
-      content: "pong",
+      content: "pong 🏓",
       ephemeral: true,
     });
   }
